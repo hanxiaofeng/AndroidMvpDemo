@@ -15,11 +15,9 @@ import test.wangkeke.com.androidmvpdemo.R;
 import test.wangkeke.com.androidmvpdemo.mvp.presenter.MvpPresenter;
 import test.wangkeke.com.androidmvpdemo.mvp.view.MvpView;
 
-public class MvpActivity extends AppCompatActivity implements AdapterView.OnItemClickListener,MvpView
+public class MvpActivity extends BaseMvpActivity<MvpView,MvpPresenter> implements AdapterView.OnItemClickListener,MvpView
 {
     private ListView mvpListView;
-
-    MvpPresenter mvpPresenter;
 
     ProgressBar pb;
 
@@ -32,21 +30,19 @@ public class MvpActivity extends AppCompatActivity implements AdapterView.OnItem
         mvpListView = (ListView) findViewById(R.id.mvp_listview);
         mvpListView.setOnItemClickListener(this);
         pb = (ProgressBar) findViewById(R.id.mvp_progress);
-        mvpPresenter = new MvpPresenter(this);
-
     }
 
     @Override
     protected void onResume()
     {
         super.onResume();
-        mvpPresenter.onResume();
+        presenter.onResume();
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
     {
-        mvpPresenter.onItemClick(position);
+        presenter.onItemClick(position);
     }
 
     @Override
@@ -74,5 +70,11 @@ public class MvpActivity extends AppCompatActivity implements AdapterView.OnItem
     public void showMessage(String msg)
     {
         Toast.makeText(MvpActivity.this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public MvpPresenter initPresenter()
+    {
+        return new MvpPresenter();
     }
 }

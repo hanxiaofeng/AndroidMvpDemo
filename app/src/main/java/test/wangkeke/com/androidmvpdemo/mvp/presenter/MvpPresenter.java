@@ -13,22 +13,20 @@ import test.wangkeke.com.androidmvpdemo.mvp.view.MvpView;
 /**
  * Created by jay on 2016/5/27.
  */
-public class MvpPresenter
+public class MvpPresenter extends BasePresenter<MvpView>
 {
-    private MvpView mvpView;
     RequestBiz requestBiz;
     private Handler mHandler;
 
-    public MvpPresenter(MvpView mvpView)
+    public MvpPresenter()
     {
         requestBiz = new RequestBizIml();
         mHandler = new Handler(Looper.getMainLooper());
-        this.mvpView = mvpView;
     }
 
     public void onResume()
     {
-        mvpView.showLoading();
+        mView.showLoading();
         requestBiz.requestForData(new OnRequestListener()
         {
             @Override
@@ -39,8 +37,8 @@ public class MvpPresenter
                     @Override
                     public void run()
                     {
-                        mvpView.hideLoading();
-                        mvpView.setListItem(data);
+                        mView.hideLoading();
+                        mView.setListItem(data);
                     }
                 });
             }
@@ -48,8 +46,8 @@ public class MvpPresenter
             @Override
             public void onFailed()
             {
-                mvpView.hideLoading();
-                mvpView.showMessage("请求失败");
+                mView.hideLoading();
+                mView.showMessage("请求失败");
             }
         });
     }
@@ -57,7 +55,7 @@ public class MvpPresenter
 
     public void onItemClick(int position)
     {
-        mvpView.showMessage("position = "+position);
+        mView.showMessage("position = "+position);
     }
 
 }
